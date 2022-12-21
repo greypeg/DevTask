@@ -7,8 +7,8 @@ import { trpc } from "../utils/trpc";
 import { Card } from "./components/Card";
 
 const Home: NextPage = () => {
-  const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
-
+  const {data} = trpc.office.getAll.useQuery();
+console.log(data)
   return (
     <>
       <Head>
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
             <Card title="Total Visitors" message="100"/>
             <Card title="Total Visitors" message="100"/>
             <Card title="Total Visitors" message="100"/>
-            
+            <Card title="Total Visitors" message="100"/>
           </div>
         </div>
       </main>

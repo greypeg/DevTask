@@ -56,7 +56,13 @@ model User {
   accounts      Account[]
   sessions      Session[]
 }
-
+model Office {
+  id            String    @id @default(cuid())
+  temperature   String?
+  drinks        String?
+  weather       String?
+  watering      String?
+}
 model VerificationToken {
   identifier String
   token      String   @unique
