@@ -2,13 +2,49 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-
+import { useState } from "react";
 import { trpc } from "../utils/trpc";
 import { Card } from "./components/Card";
+import { useQuery } from "@tanstack/react-query";
+import { Bars } from "./components/Bars";
+
+export type userGroth = {
+  id: number;
+  year: string;
+  userGain: number;
+  userLoss: number;
+}
+interface officeData {
+  temperature: string;
+  drinksAvailable: string;
+  totalUsers: string;
+  needWater?: string;
+  weather: {
+    time: string;
+    temperature: string;
+    weathercode: string;
+    windspeed: string;
+    winddirection: string;
+  },
+  userGrowth: userGroth[]
+}
 
 const Home: NextPage = () => {
-  const {data} = trpc.office.getAll.useQuery();
-console.log(data)
+
+  const getData = async () => {
+    const res = await fetch('http://localhost:3000/api/customApi');
+    return res.json();
+  };
+
+  const { data, isFetching, isError, error } = useQuery<officeData[]>(["officeData"], getData)
+
+  if (isFetching)
+    return <>Loading...</>
+
+  if (isError) {
+    return <span>Error:</span>
+  }
+
   return (
     <>
       <Head>
@@ -23,10 +59,10 @@ console.log(data)
             GoSquared <span className="text-[hsl(280,100%,70%)]">DevTask</span>
           </h1>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-4 sm:grid-cols-2 md:gap-8">
-            <Card title="Total Visitors" message="100"/>
-            <Card title="Total Visitors" message="100"/>
-            <Card title="Total Visitors" message="100"/>
-            <Card title="Total Visitors" message="100"/>
+            {data ? <Card title="Total Users" message={data ? data[0]?.totalUsers : ''} /> : <></>}
+            {data ? <Card title="Temperature" message={data ? data[0]?.temperature : ''} /> : <></>}
+            {data ? <Card title="Water the plant" message={data ? data[0]?.needWater : ''} /> : <></>}
+            {data ? <Card title="Drinks" message={data ? data[0]?.drinksAvailable : ''} /> : <></>}
           </div>
         </div>
       </main>
@@ -35,27 +71,3 @@ console.log(data)
 };
 
 export default Home;
-
-const AuthShowcase: React.FC = () => {
-  const { data: sessionData } = useSession();
-
-  const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined },
-  );
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        {secretMessage && <span> - {secretMessage}</span>}
-      </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => signOut() : () => signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
-  );
-};

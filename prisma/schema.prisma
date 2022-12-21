@@ -62,6 +62,7 @@ model Office {
   drinks        String?
   weather       String?
   watering      String?
+  totalUsers    String?
 }
 model VerificationToken {
   identifier String
