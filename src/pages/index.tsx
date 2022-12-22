@@ -6,7 +6,6 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Bars } from "./components/Bars";
 import { Sidebar } from "./components/Sidebar";
-import { BiDrink } from "react-icons/bi"
 
 export type userGrowth = {
   id: number;
