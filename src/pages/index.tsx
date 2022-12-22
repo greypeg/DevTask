@@ -74,14 +74,14 @@ const Home: NextPage = () => {
 
               </div>
               <div className="grid grid-cols-2 gap-4 md:grid-cols-2 sm:grid-cols-2 md:gap-8">
-                <button className='flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20' onClick={() => setDrinks((drink) => {
+                <button className='flex max-w-xs items-center flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20' onClick={() => setDrinks((drink) => {
                   if (drink > 0) return drink - 1;
                   return drink
-                })}>Drink</button>
+                })}>Get a Drink</button>
                 <button className='flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20' onClick={() => setDrinks(
                   data[0]?.drinksAvailable ?? 10
                 )}>Feel the fridge with drinks</button>
-              </div>d
+              </div>
             </div>
             <div>
               {data ? <Bars chartData={data[0]?.userGrowth ?? []} /> : null}
