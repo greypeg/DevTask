@@ -6,17 +6,17 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Bars } from "./components/Bars";
 import { Sidebar } from "./components/Sidebar";
+import { BiDrink } from "react-icons/bi"
 
-export type userGroth = {
+export type userGrowth = {
   id: number;
   year: string;
   userGain: number;
-  userLoss: number;
 }
 
 interface officeData {
   temperature: string;
-  drinksAvailable: string;
+  drinksAvailable: number;
   totalUsers: string;
   needWater?: string;
   weather: {
@@ -26,20 +26,25 @@ interface officeData {
     windspeed: string;
     winddirection: string;
   },
-  userGrowth: userGroth[]
+  userGrowth: userGrowth[]
 }
 
 const Home: NextPage = () => {
   const [open, setOpen] = useState(true);
+  const [drinks, setDrinks] = useState(0);
+
 
   const getData = async () => {
     const res = await fetch('http://localhost:3000/api/customApi');
     return res.json();
   };
 
-  const { data, isFetching, isError, error } = useQuery<officeData[]>(["officeData"], getData)
-
-  if (isFetching)
+  const { data, isFetching, isError, error, isSuccess, isLoading } = useQuery<officeData[]>(["officeData"], getData, {
+    onSuccess: data => {
+      setDrinks(data[0]?.drinksAvailable ?? 0);
+    },
+  })
+  if (isFetching || isLoading)
     return <>Loading...</>
 
   if (isError) {
@@ -54,23 +59,34 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <></>
-      <main className="flex min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <main className="flex min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c] min-w-full">
         <section className="flex gap-6">
           <Sidebar />
           <div className="m-3 min-h-screen text-xl text-gray-900 font-semibold">
-            <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 mb-64">
-
+            <div className="container flex flex-col items-center justify-center gap-12 px-4 py-12">
               <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
                 GoSquared <span className="text-[hsl(280,100%,70%)]">DevTask</span>
               </h1>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-4 sm:grid-cols-2 md:gap-8">
-                {data ? <Card title="Total Users" message={data[0]?.totalUsers ?? ''} /> : <></>}
-                {data ? <Card title="Temperature" message={data[0]?.temperature ?? ''} /> : <></>}
-                {data ? <Card title="Water the plant" message={data[0]?.needWater ?? ''} /> : <></>}
-                {data ? <Card title="Drinks" message={data[0]?.drinksAvailable ?? ''} /> : <></>}
-              </div>
-            </div>
+                {data ? <Card title="Total Users" message={data[0]?.totalUsers ?? ''} /> : null}
+                {data ? <Card title="Temperature" message={data[0]?.temperature ?? ''} /> : null}
+                {data ? <Card title="Water the plant" message={data[0]?.needWater ?? ''} /> : null}
+                {data ? <Card title="Drinks" message={drinks.toString() ?? '0'} /> : null}
 
+              </div>
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-2 sm:grid-cols-2 md:gap-8">
+                <button className='flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20' onClick={() => setDrinks((drink) => {
+                  if (drink > 0) return drink - 1;
+                  return drink
+                })}>Drink</button>
+                <button className='flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20' onClick={() => setDrinks(
+                  data[0]?.drinksAvailable ?? 10
+                )}>Feel the fridge with drinks</button>
+              </div>d
+            </div>
+            <div>
+              {data ? <Bars chartData={data[0]?.userGrowth ?? []} /> : null}
+            </div>
           </div>
         </section>
       </main>

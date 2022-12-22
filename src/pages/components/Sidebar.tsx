@@ -22,7 +22,7 @@ export function Sidebar(props: ISidebarProps) {
         { name: "Analytics", link: "/", icon: TbReportAnalytics, margin: true },
         { name: "File Manager", link: "/", icon: FiFolder },
         { name: "Cart", link: "/", icon: FiShoppingCart },
-        { name: "Settings", link: "/", icon: RiSettings4Line },
+        { name: "Settings", link: "/", icon: RiSettings4Line, margin: true },
     ];
 
     return (
@@ -42,13 +42,13 @@ export function Sidebar(props: ISidebarProps) {
                     <Link
                         href={menu?.link}
                         key={i}
-                        className={` ${menu?.margin && "mt-5"
+                        className={` ${menu?.margin && "mt-4"
                             } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md`}
                     >
                         <div>{React.createElement(menu?.icon, { size: "20" })}</div>
                         <h2
                             style={{
-                                transitionDelay: `${i + 3}00ms`,
+                                transitionDelay: `${i + 2}00ms`,
                             }}
                             className={`whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden"
                                 }`}
