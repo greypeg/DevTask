@@ -34,9 +34,13 @@ src/pages/api/customApi.ts
 
 - Sidebar with animation
 
-- Charts
+- Card component for info display
 
-- Endpoint with pseudo data for fetching
+- Charts, click on the little labels above the chart to enable and disable bars
+
+- Endpoint with pseudo data for fetching using react-query
+
+- Error handling of the homepage component using react query lifecycles (isLoading, isFetchig etc)
 
 - Update the State of 'Drinks' card using the buttons 'Get a drink' and 'Fill the frigde'
 
