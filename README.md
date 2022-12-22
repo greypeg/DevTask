@@ -32,6 +32,14 @@ src/pages/api/customApi.ts
 
 ## Features Implemented
 
+- Sidebar with animation
+
+- Charts
+
+- Endpoint with pseudo data for fetching
+
+- Update the State of 'Drinks' card using the buttons 'Get a drink' and 'Fill the frigde'
+
 ## T3 Stack
 
 If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
