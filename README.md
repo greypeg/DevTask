@@ -8,7 +8,7 @@ git clone https://github.com/greypeg/DevTask.git
 
 ### Commands:
 
-- cd 
+- cd DevTask
 
 - npx prisma db push
 
